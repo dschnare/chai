@@ -5,7 +5,7 @@ Chai is a simple web crawler that scrapes relevant SEO data from each page it vi
 
 # Usage
 
-    npm install chai -g
+    npm install @dschnare/chai -g
     chai http://mywebsite.com > crawl.json
 
 
