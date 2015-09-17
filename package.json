@@ -1,5 +1,5 @@
 {
-  "name": "chai",
+  "name": "@dschnare/chai",
   "version": "1.0.0",
   "bin": {
     "chai": "./bin/chai.js"
