@@ -1,5 +1,7 @@
 # Chai
 
+[![Code Climate](https://codeclimate.com/github/dschnare/chai/badges/gpa.svg)](https://codeclimate.com/github/dschnare/chai)
+
 Chai is a simple web crawler that scrapes relevant SEO data from each page it visits.
 
 
