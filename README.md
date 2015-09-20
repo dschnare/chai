@@ -23,7 +23,7 @@ Chai will scrape the following data from each page it visits.
 - All H1 values
 - All H2 values
 
-The scrape data written to `std.out` is a JSON array of objects with the following shape:
+The scrape data written to `stdout` is a JSON array of objects with the following shape:
 
 	{
 		title,
