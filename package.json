@@ -7,7 +7,7 @@
   "description": "A crawler that grabs the URL, page titles, and first H1 and H2 elements.",
   "main": "index.js",
   "scripts": {
-    "test": "eslint index.js test/specs lib bin && istanbul cover test/specs/crawl.js && tape test/specs/**.js"
+    "test": "eslint index.js test/specs lib bin && istanbul cover node_modules/tape/bin/tape test/specs/**.js"
   },
   "author": "",
   "license": "ISC",
