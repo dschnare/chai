@@ -72,3 +72,31 @@ test('should crawl all links in the links array', function (t) {
 		}
 	});
 });
+
+test('should crawl all links in the links array', function (t) {
+	t.plan(1);
+
+	var server = http.createServer(function (req, resp) {
+		resp.writeHead(500, 'Server error', { 'Content-Type': 'text/html' });
+		resp.end();
+	});
+
+	server.listen(4000, function (err) {
+		if (err) {
+			t.end(err);
+		} else {
+			var links = [
+				'http://localhost:4000/500.html'
+			];
+			crawlLinks(links, function (error) {
+				if (error) {
+					t.pass('crawlLinks threw an error as expected.');
+				} else {
+					t.fail(error.toString());
+				}
+
+				server.close();
+			});
+		}
+	});
+});
