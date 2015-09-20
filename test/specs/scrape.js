@@ -9,7 +9,7 @@ test('should grab title and headings', function (t) {
 	var filename = path.join(__dirname, '../fixtures/a.html');
 	fs.readFile(filename, { encoding: 'utf8' }, function (err, html) {
 		if (err) {
-			t.end(err);
+			t.fail(err.toString());
 		} else {
 			var data = scrape(html);
 			t.deepEquals(data, {

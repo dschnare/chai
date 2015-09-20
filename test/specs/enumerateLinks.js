@@ -9,7 +9,7 @@ test('should grab URLs from all <a> elements', function (t) {
 	var filename = path.join(__dirname, '../fixtures/c.html');
 	fs.readFile(filename, { encoding: 'utf8' }, function (err, html) {
 		if (err) {
-			t.end(err);
+			t.fail(err.toString());
 		} else {
 			var links = enumerateLinks('c.html', html);
 			t.deepEquals(links.sort(), [
