@@ -10,6 +10,6 @@ crawl(url, function (err, scrapeResult) {
 	if (err) {
 		throw err;
 	} else {
-		console.log(JSON.stringify(scrapeResult, null, 4));
+		process.stdout.write(JSON.stringify(scrapeResult, null, 4));
 	}
 });
