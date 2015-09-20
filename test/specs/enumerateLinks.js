@@ -15,7 +15,8 @@ test('should grab URLs from all <a> elements', function (t) {
 			t.deepEquals(links.sort(), [
 				'a.html',
 				'b.html',
-				'c.html'
+				'c.html',
+				'd.html'
 			]);
 		}
 	});
