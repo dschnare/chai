@@ -104,3 +104,39 @@ test('should throw an error if no URL is specified', function (t) {
 		}
 	});
 });
+
+test('should throw when indirect page throws', function (t) {
+	t.plan(1);
+
+	var server = http.createServer(function (req, resp) {
+		var filename = path.join(__dirname, '..', 'fixtures', req.url);
+		fs.exists(filename, function (exists) {
+			if (exists) {
+				resp.writeHead(200, { 'Content-Type': 'text/html' });
+				fs.createReadStream(filename).pipe(resp);
+			} else if (req.url === '500.html') {
+				resp.writeHead(500, { 'Content-Type': 'application/pdf' });
+				resp.end();
+			} else {
+				resp.writeHead(404, 'Not found', { 'Content-Type': 'text/html' });
+				resp.end();
+			}
+		});
+	});
+
+	server.listen(5000, function (err) {
+		if (err) {
+			t.fail(err.toString());
+		} else {
+			crawl('http://localhost:5000/e.html', function (error) {
+				if (error) {
+					t.pass();
+				} else {
+					t.fail(err.toString());
+				}
+			});
+		}
+
+		server.close();
+	});
+});
