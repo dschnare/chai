@@ -69,7 +69,7 @@ test('should crawl all links', function (t) {
 	});
 });
 
-test('should throw an error', function (t) {
+test('should throw an error when server returns 5xx status', function (t) {
 	t.plan(1);
 
 	var server = http.createServer(function (req, resp) {
@@ -98,7 +98,7 @@ test('should throw an error if no URL is specified', function (t) {
 	t.plan(1);
 	crawl('', function (err) {
 		if (err) {
-			t.pass();
+			t.pass('Crawl threw an error as expected.');
 		} else {
 			t.fail(err.toString());
 		}
