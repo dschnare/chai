@@ -3,9 +3,8 @@
 [![Build Status](https://travis-ci.org/dschnare/chai.svg)](https://travis-ci.org/dschnare/chai)
 [![Code Climate](https://codeclimate.com/github/dschnare/chai/badges/gpa.svg)](https://codeclimate.com/github/dschnare/chai)
 
-[![NPM version][npm-version-image]][npm-url]
-[![NPM downloads][npm-downloads-image]][npm-url]
-[![MIT License][license-image]][license-url]
+[![npm version](https://badge.fury.io/js/%40dschnare%2Fchai.svg)](http://badge.fury.io/js/%40dschnare%2Fchai)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
 Chai is a simple web crawler that scrapes relevant SEO data from each page it visits.
 
