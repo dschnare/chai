@@ -98,7 +98,7 @@ test('should throw an error if no URL is specified', function (t) {
 	t.plan(1);
 	crawl('', function (err) {
 		if (err) {
-			t.equals(err.status, 500, 'Crawl should throw with status 500.');
+			t.notEqual(err.status, 404, 'Crawl should throw with status 5xx.');
 		} else {
 			t.fail('Crawl did not throw as expected.');
 		}
