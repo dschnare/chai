@@ -79,18 +79,18 @@ test('should throw an error when server returns 5xx status', function (t) {
 
 	server.listen(4000, function (err) {
 		if (err) {
-			t.fail(err.toString());
+			t.end(err);
 		} else {
 			crawl('http://localhost:4000/500.html', function (error) {
 				if (error) {
-					t.pass();
+					t.notEqual(error.status, 404, 'Crawl should throw with status 5xx.');
 				} else {
-					t.fail(err.toString());
+					t.fail(error.toString());
 				}
+
+				server.close();
 			});
 		}
-
-		server.close();
 	});
 });
 
@@ -98,9 +98,9 @@ test('should throw an error if no URL is specified', function (t) {
 	t.plan(1);
 	crawl('', function (err) {
 		if (err) {
-			t.pass('Crawl threw an error as expected.');
+			t.equals(err.status, 500, 'Crawl should throw with status 500.');
 		} else {
-			t.fail(err.toString());
+			t.fail('Crawl did not throw as expected.');
 		}
 	});
 });
@@ -114,8 +114,8 @@ test('should throw when indirect page throws', function (t) {
 			if (exists) {
 				resp.writeHead(200, { 'Content-Type': 'text/html' });
 				fs.createReadStream(filename).pipe(resp);
-			} else if (req.url === '500.html') {
-				resp.writeHead(500, { 'Content-Type': 'application/pdf' });
+			} else if (req.url.indexOf('500.html') >= 0) {
+				resp.writeHead(500, { 'Content-Type': 'text/html' });
 				resp.end();
 			} else {
 				resp.writeHead(404, 'Not found', { 'Content-Type': 'text/html' });
@@ -124,19 +124,20 @@ test('should throw when indirect page throws', function (t) {
 		});
 	});
 
-	server.listen(5000, function (err) {
+	server.listen(3333, function (err) {
 		if (err) {
-			t.fail(err.toString());
+			t.end(err);
 		} else {
-			crawl('http://localhost:5000/e.html', function (error) {
+			crawl('http://localhost:3333/e.html', function (error, data) {
 				if (error) {
-					t.pass();
+					t.notEqual(error.status, 404, 'Crawl should throw with status 5xx.');
 				} else {
-					t.fail(err.toString());
+					process.stdout.write(JSON.stringify(data));
+					t.fail('Crawl did not throw as expected.');
 				}
+
+				server.close();
 			});
 		}
-
-		server.close();
 	});
 });

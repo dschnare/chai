@@ -90,7 +90,7 @@ test('should crawl all links in the links array', function (t) {
 			];
 			crawlLinks(links, function (error) {
 				if (error) {
-					t.pass('crawlLinks threw an error as expected.');
+					t.notEqual(error.status, 404, 'crawlLinks threw an error as expected.');
 				} else {
 					t.fail(error.toString());
 				}
