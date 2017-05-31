@@ -60,7 +60,7 @@ test('should crawl all links', function (t) {
 				});
 				t.deepEquals(scrapeResult[3], {
 					url: 'http://localhost:3000/d.html',
-					notFound: true
+					error: 404
 				});
 
 				server.close();
@@ -69,7 +69,7 @@ test('should crawl all links', function (t) {
 	});
 });
 
-test('should throw an error when server returns 5xx status', function (t) {
+test('should not throw an error when server returns 5xx status', function (t) {
 	t.plan(1);
 
 	var server = http.createServer(function (req, resp) {
@@ -77,15 +77,18 @@ test('should throw an error when server returns 5xx status', function (t) {
 		resp.end();
 	});
 
-	server.listen(4000, function (err) {
+	server.listen(3000, function (err) {
 		if (err) {
 			t.end(err);
 		} else {
-			crawl('http://localhost:4000/500.html', function (error) {
+			crawl('http://localhost:3000/500.html', function (error, scrapeResult) {
 				if (error) {
-					t.notEqual(error.status, 404, 'Crawl should throw with status 5xx.');
+					t.fail('Crawl did not throw as expected.');
 				} else {
-					t.fail(error.toString());
+					t.deepEquals(scrapeResult[0], {
+						url: 'http://localhost:3000/500.html',
+						error: 500
+					});
 				}
 
 				server.close();
@@ -124,18 +127,24 @@ test('should throw when indirect page throws', function (t) {
 		});
 	});
 
-	server.listen(3333, function (err) {
+	server.listen(3000, function (err) {
 		if (err) {
 			t.end(err);
 		} else {
-			crawl('http://localhost:3333/e.html', function (error, data) {
+			crawl('http://localhost:3000/e.html', function (error, scrapeResult) {
 				if (error) {
 					t.notEqual(error.status, 404, 'Crawl should throw with status 5xx.');
 				} else {
-					process.stdout.write(JSON.stringify(data));
-					t.fail('Crawl did not throw as expected.');
+					t.deepEquals(scrapeResult[0],
+						{
+							title: 'Page E',
+							url: 'http://localhost:3000/e.html',
+							headings: {
+								h1: ['This is a page'],
+								h2: ['This is a section', 'This is <strong>BIG</strong>']
+							}
+						});
 				}
-
 				server.close();
 			});
 		}
