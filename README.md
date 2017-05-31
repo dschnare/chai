@@ -34,10 +34,10 @@ The scrape data written to `stdout` is a JSON array of objects with the followin
 		}
 	}
 
-For URLs that respond with a `404` the scrape object has this shape:
+For URLs that respond with an error the scrape object has this shape:
 
 	{
-		url, notFound: true
+		url, error: 404
 	}
 
 

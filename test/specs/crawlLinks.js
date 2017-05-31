@@ -64,7 +64,7 @@ test('should crawl all links in the links array', function (t) {
 				});
 				t.deepEquals(scrapeResult[3], {
 					url: 'http://localhost:3000/d.html',
-					notFound: true
+					error: 404
 				});
 
 				server.close();
@@ -81,20 +81,18 @@ test('should crawl all links in the links array', function (t) {
 		resp.end();
 	});
 
-	server.listen(4000, function (err) {
+	server.listen(3000, function (err) {
 		if (err) {
 			t.end(err);
 		} else {
 			var links = [
-				'http://localhost:4000/500.html'
+				'http://localhost:3000/500.html'
 			];
-			crawlLinks(links, function (error) {
-				if (error) {
-					t.notEqual(error.status, 404, 'crawlLinks threw an error as expected.');
-				} else {
-					t.fail(error.toString());
-				}
-
+			crawlLinks(links, function (error, scrapeResult) {
+				t.deepEquals(scrapeResult[0], {
+					url: 'http://localhost:3000/500.html',
+					error: 500
+				});
 				server.close();
 			});
 		}
