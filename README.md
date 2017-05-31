@@ -6,7 +6,8 @@
 [![npm version](https://badge.fury.io/js/%40dschnare%2Fchai.svg)](http://badge.fury.io/js/%40dschnare%2Fchai)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
-Chai is a simple web crawler that scrapes relevant SEO data from each page it visits.
+Chai is a simple web crawler that scrapes relevant SEO data from each page it
+visits.
 
 
 # Usage
@@ -23,22 +24,25 @@ Chai will scrape the following data from each page it visits.
 - All H1 values
 - All H2 values
 
-The scrape data written to `stdout` is a JSON array of objects with the following shape:
+The scrape data written to `stdout` is a JSON array of objects with the
+following shape:
 
-	{
-		title,
-		url,
-		headings: {
-			h1: [],
-			h2: []
-		}
-	}
+  {
+    title,
+    url,
+    headings: {
+      h1: [],
+      h2: []
+    }
+  }
 
 For URLs that respond with an error the scrape object has this shape:
 
-	{
-		url, error: 404
-	}
+  {
+    url, statusCode, error
+  }
+
+Where `error` is the error object returned from [Superagent](http://visionmedia.github.io/superagent/#error-handling).
 
 
 # Roadmap

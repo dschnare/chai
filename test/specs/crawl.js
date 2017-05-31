@@ -4,6 +4,16 @@ var http = require('http');
 var test = require('tape');
 var crawl = require('../../lib/crawl');
 
+function pluck (o, keys) {
+	var obj = {};
+	for (var k = 0, len = keys.length; k < len; k += 1) {
+		if (keys[k] in o) {
+			obj[keys[k]] = o[keys[k]];
+		}
+	}
+	return obj;
+}
+
 test('should crawl all links', function (t) {
 	t.plan(5);
 
@@ -58,9 +68,9 @@ test('should crawl all links', function (t) {
 						h2: ['This is a section', 'This is <strong>BIG</strong>']
 					}
 				});
-				t.deepEquals(scrapeResult[3], {
+				t.deepEquals(pluck(scrapeResult[3], ['url', 'statusCode']), {
 					url: 'http://localhost:3000/d.html',
-					error: 404
+					statusCode: 404
 				});
 
 				server.close();
@@ -85,9 +95,9 @@ test('should not throw an error when server returns 5xx status', function (t) {
 				if (error) {
 					t.fail('Crawl did not throw as expected.');
 				} else {
-					t.deepEquals(scrapeResult[0], {
+					t.deepEquals(pluck(scrapeResult[0], ['url', 'statusCode']), {
 						url: 'http://localhost:3000/500.html',
-						error: 500
+						statusCode: 500
 					});
 				}
 
@@ -101,7 +111,7 @@ test('should throw an error if no URL is specified', function (t) {
 	t.plan(1);
 	crawl('', function (err) {
 		if (err) {
-			t.notEqual(err.status, 404, 'Crawl should throw with status 5xx.');
+			t.notEqual(err.statusCode, 404, 'Crawl should throw with status 5xx.');
 		} else {
 			t.fail('Crawl did not throw as expected.');
 		}
@@ -133,7 +143,7 @@ test('should throw when indirect page throws', function (t) {
 		} else {
 			crawl('http://localhost:3000/e.html', function (error, scrapeResult) {
 				if (error) {
-					t.notEqual(error.status, 404, 'Crawl should throw with status 5xx.');
+					t.notEqual(error.statusCode, 404, 'Crawl should throw with status 5xx.');
 				} else {
 					t.deepEquals(scrapeResult[0],
 						{
