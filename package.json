@@ -1,6 +1,6 @@
 {
   "name": "@dschnare/chai",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "bin": {
     "chai": "./bin/chai.js"
   },

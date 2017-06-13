@@ -4,6 +4,16 @@ var http = require('http');
 var test = require('tape');
 var crawlLinks = require('../../lib/crawlLinks');
 
+function pluck (o, keys) {
+	var obj = {};
+	for (var k = 0, len = keys.length; k < len; k += 1) {
+		if (keys[k] in o) {
+			obj[keys[k]] = o[keys[k]];
+		}
+	}
+	return obj;
+}
+
 test('should crawl all links in the links array', function (t) {
 	t.plan(5);
 
@@ -62,9 +72,9 @@ test('should crawl all links in the links array', function (t) {
 						h2: ['This is a section', 'This is <strong>BIG</strong>']
 					}
 				});
-				t.deepEquals(scrapeResult[3], {
+				t.deepEquals(pluck(scrapeResult[3], ['url', 'statusCode']), {
 					url: 'http://localhost:3000/d.html',
-					error: 404
+					statusCode: 404
 				});
 
 				server.close();
@@ -89,9 +99,9 @@ test('should crawl all links in the links array', function (t) {
 				'http://localhost:3000/500.html'
 			];
 			crawlLinks(links, function (error, scrapeResult) {
-				t.deepEquals(scrapeResult[0], {
+				t.deepEquals(pluck(scrapeResult[0], ['url', 'statusCode']), {
 					url: 'http://localhost:3000/500.html',
-					error: 500
+					statusCode: 500
 				});
 				server.close();
 			});
